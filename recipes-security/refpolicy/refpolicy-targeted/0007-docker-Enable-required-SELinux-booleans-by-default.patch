@@ -1,0 +1,44 @@
+From 5848724b303af0b4f3c0dfada691bd01ec81401c Mon Sep 17 00:00:00 2001
+From: Kemal Rasim Sh <kshakir@qti.qualcomm.com>
+Date: Tue, 13 Oct 2026 17:44:22 +0300
+Subject: [PATCH 7/7] docker: Enable required SELinux booleans by default
+
+Enable dockerd_connect_user_services and
+dockerd_mounton_xdg_downloads by default.
+
+This removes the need for manual SELinux configuration on
+QCOM distro systems where Docker requires access to user
+services and XDG Downloads mount points.
+
+Upstream-Status: Inappropriate [meta-qcom-distro specific]
+
+Signed-off-by: Kemal Rasim Sh <kshakir@qti.qualcomm.com>
+---
+ policy/modules/services/docker.te | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/policy/modules/services/docker.te b/policy/modules/services/docker.te
+index eb408a30f..5ec98cca6 100644
+--- a/policy/modules/services/docker.te
++++ b/policy/modules/services/docker.te
+@@ -12,7 +12,7 @@ policy_module(docker)
+ ##	UNIX stream sockets.
+ ##	</p>
+ ## </desc>
+-gen_tunable(dockerd_connect_user_services, false)
++gen_tunable(dockerd_connect_user_services, true)
+ 
+ ## <desc>
+ ##	<p>
+@@ -20,7 +20,7 @@ gen_tunable(dockerd_connect_user_services, false)
+ ##	on user XDG Downloads directories.
+ ##	</p>
+ ## </desc>
+-gen_tunable(dockerd_mounton_xdg_downloads, false)
++gen_tunable(dockerd_mounton_xdg_downloads, true)
+ 
+ container_engine_domain_template(dockerd)
+ container_system_engine(dockerd_t)
+-- 
+2.43.0
+
